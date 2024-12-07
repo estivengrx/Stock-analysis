@@ -1,0 +1,134 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Stock Pop Prediction App
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='javascript.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='javascript.js') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center mt-4">Stock Pop Prediction App</h1>
+
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form id="analyze-form" action="{{ url_for('analyze') }}" method="post" class="mx-auto mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card bg-light mb-4 equal-height">
+                    <div class="card-body p-4">
+                        <div class="form-group position-relative">
+                            <label for="stocks" class="font-weight-bold">Stocks:</label>
+                            <div class="input-group">
+                                <input type="text" id="stock-input" class="form-control" placeholder="Enter stock ticker code (e.g., AAPL)">
+                                <div class="input-group-append">
+                                    <button type="button" id="add-stock" class="btn btn-secondary">Add</button>
+                                </div>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-secondary info-button" data-toggle="tooltip" title="Enter the list of stocks you want to analyze. They have to be searched by their ticker symbols.">
+                                        <i class="fas fa-exclamation-circle" style="color: lightyellow;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="stock-list" class="mt-2"></div>
+                            <p>For a list of stocks to analyze, please visit <a href="https://stockanalysis.com/stocks/" target="_blank">Stock Analysis</a>.</p>
+                        </div>
+                        <div class="form-group position-relative">
+                            <label for="threshold" class="font-weight-bold">Threshold:</label>
+                            <div class="input-group">
+                                <input type="number" id="threshold" name="threshold" step="0.01" required class="form-control">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-secondary info-button" data-toggle="tooltip" title="Enter the minimum relative increase in the stock price that must occur within a certain number of days for a signal to be considered successful. For example, enter 0.05 for a 5% increase. This threshold will be used to evaluate the volume spikes indicator to identify potential trading opportunities.">
+                                        <i class="fas fa-exclamation-circle" style="color: lightyellow;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group position-relative">
+                            <label for="days" class="font-weight-bold">Day range:</label>
+                            <div class="input-group">
+                                <input type="number" id="days" name="days" required class="form-control">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-secondary info-button" data-toggle="tooltip" title="Enter the number of days within which the stock price must increase by at least the threshold amount for a signal to be considered successful. For example, enter 10 days. This day range defines the window within which the stock's performance will be evaluated.">
+                                        <i class="fas fa-exclamation-circle" style="color: lightyellow;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group position-relative">
+                            <label for="rsi_threshold" class="font-weight-bold">RSI Threshold:</label>
+                            <div class="input-group">
+                                <input type="number" id="rsi_threshold" name="rsi_threshold" required class="form-control">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-secondary info-button" data-toggle="tooltip" title="Enter the value below which the Relative Strength Index (RSI) is considered oversold. For example, enter 30. This threshold helps identify potential buying opportunities when the stock is perceived as oversold.">
+                                        <i class="fas fa-exclamation-circle" style="color: lightyellow;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group position-relative">
+                            <label for="initial_capital" class="font-weight-bold">Initial capital to buy shares:</label>
+                            <div class="input-group">
+                                <input type="number" id="initial_capital" name="initial_capital" required class="form-control">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-secondary info-button" data-toggle="tooltip" title="The 'Initial Capital' is the amount of money you start with for the backtest strategy. It represents your initial investment used to buy shares when the short-term moving average crosses above the long-term moving average.">
+                                        <i class="fas fa-exclamation-circle" style="color: lightyellow;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-light mb-4 equal-height">
+                    <div class="card-body p-4">
+                        <div class="form-group position-relative">
+                            <label class="font-weight-bold">Indicator Weights (Total must be 100):</label>
+                            <button type="button" class="btn btn-secondary info-button" data-toggle="tooltip" title="Enter the weight for the bullish signals indicators. Use numbers from 0 to 100 (e.g., 20 for 20%).">
+                                <i class="fas fa-exclamation-circle" style="color: lightyellow;"></i>
+                            </button>
+                        </div>
+                        <div class="form-group small-text">
+                            <p style="display: flex; justify-content: space-between; align-items: center; border: 2px solid #343a40; padding: 15px;">
+                                <span style="font-weight: bold;">Total weight entered</span>
+                                <span id="total-weight">0%</span>
+                            </p>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <p class="font-weight-bold">Bullish Signal</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="font-weight-bold">Weight</p>
+                            </div>
+                        </div>
+                        {% for indicator, signal in {'moving_average_crossover': 'Moving Average Crossover', 'rsi_oversold': 'RSI Oversold', 'volume_spikes': 'Volume Spikes', 'breakouts': 'Breakouts', 'bollinger_bands': 'Bollinger Bands', 'exponential_moving_average': 'Exponential Moving Average', 'cup_and_handle': 'Cup and Handle', 'ascending_triangle': 'Ascending Triangle', 'inverse_head_and_shoulders': 'Inverse Head and Shoulders'}.items() %}
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <p>{{ signal }}</p>
+                            </div>
+                            <div class="col-md-6 full-width-input">
+                                <div class="input">
+                                    <input type="number" step="1" min="0" max="100" name="weights[{{ indicator }}]" class="form-control weight-input" required oninput="calculateTotalWeight()">
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="stocks" id="stocks">
+        <input type="submit" value="Analyze" class="btn btn-primary btn-block mt-4">
+    </form>
+</div>
+{% endblock %}

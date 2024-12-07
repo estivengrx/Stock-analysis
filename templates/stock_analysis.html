@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Stock Analysis for {{ stock }}
+{% endblock %}
+
+{% block content %}
+<h1 class="mt-5">Stock Analysis for {{ stock }}</h1>
+<h2>Recommendation: {{ recommendation }}</h2>
+<h3>Strategy Results:</h3>
+<ul>
+    {% for signal, result in strategy_results.items() %}
+        {% if signal != 'strategy_success_rate' %}
+            <li>{{ signal }}: Success Rate {{ result['success_rate'] }}</li>
+        {% endif %}
+    {% endfor %}
+</ul>
+<h3>Strategy Success Rate: {{ strategy_results['strategy_success_rate'] }}</h3>
+<a href="/" class="btn btn-primary mt-4">Back</a>
+{% endblock %}

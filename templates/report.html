@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Bullish Stocks Report
+{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+    <h1 class="mt-5">Bullish Stocks Report</h1>
+    <div class="mt-3">
+        <p>This report calculates a score for a given stock based on the appearance of bullish signals throughout a specific day range. The signals are calculated using various indicators such as moving average crossover, RSI oversold, volume spikes, breakouts, bollinger bands, exponential moving average, cup and handle, ascending triangle, and inverse head and shoulders.</p>
+        <p>The score for each signal is calculated within a specific window of days. If there is at least one signal within the window, the individual score is 1. If there is not a signal within the window, the individual score is 0. The overall score is the average of all individual scores.</p>
+    </div>
+    <div class="row justify-content-center">
+        {% if errors %}
+        <div class="alert alert-danger text-left" role="alert">
+            <ul style="list-style-position: inside; padding-left: 0;">
+                {% for error in errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {% if report and report|length > 0 %}
+        <div class="col-12 d-flex justify-content-center">
+            <table class="table mt-10 table-bordered table-striped" style="width: 50%;">
+                <thead>
+                    <tr>
+                        <th>Stock</th>
+                        <th>Moving Average Crossover</th>
+                        <th>RSI Oversold</th>
+                        <th>Volume Spikes</th>
+                        <th>Breakouts</th>
+                        <th>Bollinger Bands</th>
+                        <th>Exponential Moving Average</th>
+                        <th>Cup and Handle</th>
+                        <th>Ascending Triangle</th>
+                        <th>Inverse Head and Shoulders</th>
+                        <th>Score</th>
+                        <th>Recommendation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in report %}
+                    <tr class="{{ 'table-info' if row.overall_score > 0.5 else '' }}">
+                        <td>{{ row.stock }}</td>
+                        <td>{{ row.moving_average_crossover }}</td>
+                        <td>{{ row.rsi_oversold }}</td>
+                        <td>{{ row.volume_spikes }}</td>
+                        <td>{{ row.breakouts }}</td>
+                        <td>{{ row.bollinger_bands }}</td>
+                        <td>{{ row.exponential_moving_average }}</td>
+                        <td>{{ row.cup_and_handle }}</td>
+                        <td>{{ row.ascending_triangle }}</td>
+                        <td>{{ row.inverse_head_and_shoulders }}</td>
+                        <td>{{ row.overall_score | round(2) }}</td>
+                        <td>{{ row.recommendation }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="13" class="text-center">
+                            <div class="d-flex justify-content-center">
+                                <a href="{{ url_for('visualization', stock=row.stock) }}" class="btn btn-primary mt-2 mr-2">View Detailed Visualizations</a>
+                                <a href="{{ url_for('backtest', stock=row.stock)}}" class="btn btn-primary mt-2">Backtest</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <p>No analysis results to display.</p>
+        </div>
+        {% endif %}
+    </div>
+    <ul class="navbar-nav mx-auto">
+        <li class="nav-item">
+            <a class="nav-link btn btn-primary" href="/">Back to the form</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}

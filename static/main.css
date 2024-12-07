@@ -1,0 +1,83 @@
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+.navbar {
+    background-color: #343a40 !important;
+}
+.navbar-brand, .nav-link {
+    color: #ffffff !important;
+}
+.nav-link:hover {
+    color: #d4d4d4 !important;
+}
+.container {
+    margin-top: 0px;
+}
+.full-width-input {
+    padding-left: 0;
+    padding-right: 0;
+}
+.full-width-input .form-control {
+    width: 100%;
+}
+.btn-custom {
+    background-color: #007bff;
+    color: white;
+    border-radius: 50px;
+    padding: 10px 20px;
+}
+.btn-custom:hover {
+    background-color: #0056b3;
+    color: white;
+}
+.card {
+    margin: 20px 0;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    flex: 1;
+}
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+.card-body {
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+.info-button {
+    background-color: #343a40 !important;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.input-group-append .btn {
+    margin-left: -1px;
+}
+.input-group .form-control {
+    border-right: 0;
+}
+.input-group .input-group-append .btn {
+    border-left: 0;
+}
+.card-height {
+    height: 100%;
+}
+.row-equal {
+    display: flex;
+}
+#total-weight {
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+}
+.small-card .card {
+    width: 500px;
+    height: 100px;
+}

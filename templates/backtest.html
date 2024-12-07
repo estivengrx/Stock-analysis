@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Backtest Results
+{% endblock %}
+
+{% block content %}
+<div class="container text">
+    <h1 class="mt-5">Backtest Results</h1>
+    <div class="mt-3">
+        <p>This backtest calculates the performance of a moving average crossover strategy on the given stock. The metrics include:</p>
+        <ul>
+            <li><strong>Final Portfolio Value:</strong> The total value of your portfolio at the end of the backtest.</li>
+            <li><strong>ROI:</strong> Return on Investment. It's the percentage of how much money has been made compared to the initial investment. The value can range from -1 (total loss) to infinity.</li>
+            <li><strong>Accuracy:</strong> The proportion of the total trading signals that were correct. A value of 1 means every signal was correct, while 0 means no signals were correct.</li>
+            <li><strong>Precision:</strong> Of the trading signals where we predicted a price increase, the proportion that were correct. A value of 1 means every predicted price increase was correct, while 0 means none were correct.</li>
+            <li><strong>Recall:</strong> Of the times the price actually increased, the proportion where we correctly signaled a price increase. A value of 1 means we caught every price increase, while 0 means we caught none.</li>
+        </ul>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12 d-flex justify-content-center">
+            <table class="table mt-10 table-bordered table-striped" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Final Portfolio Value</th>
+                        <th>ROI</th>
+                        <th>Accuracy</th>
+                        <th>Precision</th>
+                        <th>Recall</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>${{ '%.2f'|format(backtest_results.final_portfolio_value) }}</td>
+                        <td>{{ backtest_results.roi | round(6) }}</td>
+                        <td>{{ backtest_results.accuracy | round(2) }}</td>
+                        <td>{{ backtest_results.precision | round(2) }}</td>
+                        <td>{{ backtest_results.recall | round(2) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h2 class="text-center">Earnings Analysis</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <iframe style="border: none;" src="{{ url_for('static', filename='visualizations/fundamental_factors/' + stock + '_eps.html') }}" width="100%" height="600"></iframe>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <iframe style="border: none;" src="{{ url_for('static', filename='visualizations/fundamental_factors/' + stock + '_surprise.html') }}" width="100%" height="600"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h2 class="text-center">Latest News</h2>
+    <div class="row justify-content-center">
+        {% for article in news_data.articles %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                {% if article.urlToImage %}
+                    <img src="{{ article.urlToImage }}" class="card-img-top" alt="News Image">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ article.title }}</h5>
+                    <p class="card-text">{{ article.description }}</p>
+                    <a href="{{ article.url }}" class="btn btn-primary" target="_blank">Read more</a>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Source: {{ article.source.name }} | Published at: {{ article.publishedAt }}</small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <ul class="navbar-nav mx-auto mt-5">
+        <li class="nav-item">
+            <a class="nav-link btn btn-primary" href="{{ url_for('report') }}">Back to the report</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}

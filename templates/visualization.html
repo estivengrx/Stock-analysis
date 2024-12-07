@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Stock Visualizations
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mt-5 text-center">Visualizations for {{ stock }}</h1>
+
+    <div class="card-deck">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Stock Price and Moving Averages</h2>
+                <p class="card-text">This graph shows the stock's closing price along with its 50-day and 200-day moving averages. These lines help identify the stock's trend direction. If the 50-day moving average crosses above the 200-day moving average, it might be a good time to buy.</p>
+            </div>
+            <div class="card-img">
+                <iframe style="border: none;" src="{{ url_for('static', filename='visualizations/bullish_signals/' + stock + '_chart.html') }}" width="100%" height="600"></iframe>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Cup-and-Handle Patterns</h2>
+                <p class="card-text">This graph highlights Cup-and-Handle patterns, which indicate a bullish trend. The pattern starts with a price drop and recovery, forming a "cup," followed by a smaller drop, forming the "handle." If the price breaks above the handle, it suggests the stock may continue to rise, making it a potential buy signal.</p>
+            </div>
+            <div class="card-img">
+                <iframe style="border: none;" src="{{ url_for('static', filename='visualizations/bullish_signals/' + stock + '_cup_and_handle.html') }}" width="100%" height="600"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-deck">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Ascending Triangle Patterns</h2>
+                <p class="card-text">This graph shows Ascending Triangle patterns, which also suggest a bullish trend. The pattern features a flat resistance line and a rising support line. When the price breaks above the resistance line, it indicates a potential rise in the stock's price, signaling a good time to buy.</p>
+            </div>
+            <div class="card-img">
+                <iframe style="border: none;" src="{{ url_for('static', filename='visualizations/bullish_signals/' + stock + '_ascending_triangle.html') }}" width="100%" height="600"></iframe>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Inverse Head-and-Shoulders Patterns</h2>
+                <p class="card-text">This graph displays Inverse Head-and-Shoulders patterns, which indicate a bullish reversal. The pattern consists of three troughs, with the middle one being the lowest (the head) and the others being higher (the shoulders). When the price breaks above the "neckline" formed by the highs between the troughs, it suggests the stock's price may rise, making it a good time to buy.</p>
+            </div>
+            <div class="card-img">
+                <iframe style="border: none;" src="{{ url_for('static', filename='visualizations/bullish_signals/' + stock + '_inverse_head_and_shoulders.html') }}" width="100%" height="600"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-deck">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Bollinger Bands</h2>
+                <p class="card-text">This graph shows the Bollinger Bands along with the stock's closing price. The Bollinger Bands consist of an upper band, a lower band, and a moving average. When the price crosses above the lower band, it indicates a potential bullish signal.</p>
+            </div>
+            <div class="card-img">
+                <iframe style="border: none;" src="{{ url_for('static', filename='visualizations/bullish_signals/' + stock + '_bollinger_bands.html') }}" width="100%" height="600"></iframe>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Relative Strength Index (RSI)</h2>
+                <p class="card-text">This graph shows the Relative Strength Index (RSI) of the stock. The RSI is a momentum oscillator that measures the speed and change of price movements. It ranges from 0 to 100 and is typically used to identify overbought or oversold conditions in a market. An RSI above 70 indicates the stock may be overbought, and an RSI below 30 indicates it may be oversold.</p>
+            </div>
+            <div class="card-img">
+                <iframe style="border: none;" src="{{ url_for('static', filename='visualizations/bullish_signals/' + stock + '_rsi.html') }}" width="100%" height="600"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-lg-12 text-center">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn btn-primary" href="{{ url_for('report') }}">Back to the report</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
