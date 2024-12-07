@@ -2,6 +2,20 @@
 
 This application is designed to analyze stocks based on user input and provide visualizations for specific stocks. It also includes a backtesting module to evaluate the performance of the app's predictions over historical data.
 
+## Screenshots of the app
+
+### Main Page
+![Main Page](project_screenshots/main_page.png "Main Page of the Application")
+
+### Stock Analysis Page
+![Stock Analysis Page](project_screenshots/stock_analysis_page.png "Stock Analysis Page")
+
+### Stock Analysis Page (Alternate View)
+![Stock Analysis Page 2](project_screenshots/stock_analysis_page2.png "Alternate Stock Analysis View")
+
+### Backtest Page
+![Backtest Page](project_screenshots/backtest_page.png "Backtest Module Page")
+
 ## Features
 
 - **Stock Analysis**: Analyze stocks based on various technical indicators.
@@ -121,15 +135,7 @@ The application will start a local server, usually on `http://127.0.0.1:5000/`.
 4. Push to the branch (`git push origin feature/your-feature`).
 5. Create a new Pull Request.
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Special thanks to the developers of the libraries and APIs used in this project.
-- Thanks to the contributors who helped improve this project.
 
 ## Contact
 
-For any inquiries or feedback, please contact [your-email@example.com].
+For any inquiries or feedback, please contact [cestiven156@gmail.com].

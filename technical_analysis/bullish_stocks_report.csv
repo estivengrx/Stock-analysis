@@ -1,5 +1,5 @@
 stock,moving_average_crossover,rsi_oversold,volume_spikes,breakouts,bollinger_bands,exponential_moving_average,cup_and_handle,ascending_triangle,inverse_head_and_shoulders,overall_score,recommendation
-AAPL,0,0.0,0.1,0.1,0,0,0,0,0,0.2,Don't Trade
-MSFT,0,0.1,0.1,0.1,0,0,0,0,0,0.30000000000000004,Don't Trade
-NVDA,0,0.0,0.0,0.0,0,0,0,0,0,0.0,Don't Trade
-NU,0,0.0,0.0,0.0,0,0,0,0,0,0.0,Don't Trade
+NU,0,0.2,0,0.1,0.0,0.1,0,0.1,0.0,0.5000000000000001,Trade
+SPY,0,0.0,0,0.1,0.1,0.1,0,0.0,0.0,0.3000000000000001,Don't Trade
+SCHD,0,0.0,0,0.1,0.0,0.1,0,0.1,0.0,0.3000000000000001,Don't Trade
+AMD,0,0.2,0,0.1,0.0,0.1,0,0.0,0.1,0.5000000000000001,Trade
